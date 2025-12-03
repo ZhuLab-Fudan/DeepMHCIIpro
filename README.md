@@ -7,6 +7,7 @@ DeepMHCIIpro is a high-performance structure-aware deep interaction model reveal
 ## Installation
 ###### Pip installation (release version with model weights)
 ```bash
+wget https://github.com/ZhuLab-Fudan/DeepMHCIIpro/releases/download/v1.0.1/deepmhcpro-1.0.1-py3-none-any.whl
 pip install deepmhcpro-1.0.1-py3-none-any.whl
 deepmhcpro --help 
 ```
