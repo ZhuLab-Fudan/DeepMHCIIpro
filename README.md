@@ -117,7 +117,7 @@ deepmhcpro -i ./data/random/seq2logo.txt-m EL -r -a DRB1_1402 --motif "./figures
 * `Allele_EL_Scores`: Each allele score for presentation
 
 ### Source code installation (For experiment validations)
-All the independent test data and trained model weights are available.
+All the independent test data and trained model weights are available.The python version can be changed in the file of environment.yaml.
 ```bash
 git clone https://github.com/lijxgit/DeepMHCIIpro.git && cd DeepMHCIIpro
 conda env create -f environment.yaml
