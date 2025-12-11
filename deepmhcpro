@@ -211,6 +211,10 @@ def main_process(input_path, output_path, mode, start_id, num_models, allele, co
     s_, p_, bm_, *p4_ = run_model_fn(model, model_path, data_list, data_loader, output_path, bi_s_)
     
     if motif != None:
+        motif_dir = os.path.dirname(motif)
+        if motif_dir != "" and not os.path.exists(motif_dir):
+             os.makedirs(motif_dir, exist_ok=True)
+        
         import logomaker as lm
         import matplotlib.pyplot as plt
         
