@@ -49,7 +49,7 @@ def get_inp_data(data_file, mhc_name_seq=None, allele_list=None, with_index=True
                     if len(line_data) >= 4:
                         peptide_seq, score, cell_line_name, context, *_ = line.split()
                     elif len(line_data) >= 3:
-                        peptide_seq, score, context, *_ = line.split()
+                        peptide_seq, cell_line_name, context, *_ = line.split()
                     elif len(line_data) >= 2:
                         peptide_seq, context, *_ = line.split()
                         score = 0
