@@ -5,13 +5,14 @@ DeepMHCIIpro is a high-performance structure-aware deep interaction model reveal
 ![model](./figures/DeepMHCIIpro.png)
 
 ## Installation
-###### Pip installation (release version with model weights)
+##### Pip installation (release version with model weights)
 ```bash
 wget https://github.com/ZhuLab-Fudan/DeepMHCIIpro/releases/download/v1.0.1/deepmhcpro-1.0.1-py3-none-any.whl
 pip install deepmhcpro-1.0.1-py3-none-any.whl
 deepmhcpro --help 
 ```
-###### Source code installation (seperately download model weights)
+
+<!-- ##### Source code installation (seperately download model weights)
 ```bash
 git clone https://github.com/lijxgit/DeepMHCIIpro.git && cd DeepMHCIIpro
 conda env create -f environment.yaml
@@ -19,7 +20,7 @@ conda activate DeepMHCIIpro
 wget -O model-weights.zip "https://zenodo.org/records/15280831/files/model-weights.zip?download=1"
 unzip model-weights.zip && mv mhcii/ deepmhc/models/ 
 ./deepmhcpro --help 
-```
+``` -->
 
 ## Data and model weights
 The following data and model weights are available at [Zenodo](https://doi.org/10.5281/zenodo.15844437).
@@ -42,75 +43,11 @@ DeepMHCIIpro/
 
 ## Usage
 
-### Commands
-###### Single-allele presentation prediction with evaluation
-```bash
-# No context information 
-./deepmhcpro -i ./data/indep/SA2023.txt -w PMC -m EL -r \
---evaluation
-# Use context information
-./deepmhcpro -i ./data/indep/SA2023.txt -w PMC -m EL -r -c \
---evaluation
-```
-###### Multi-allele antigen presentation prediction with evaluation
-```bash
-# No context information 
-./deepmhcpro -i ./data/indep/MA2024.txt -w PMC -m EL -r \
---evaluation
-# Use context information
-./deepmhcpro -i ./data/indep/MA2024.txt -w PMC -m EL -r -c \
---evaluation
-```
-###### Microbial antigen presentation prediction with evaluation
-```bash
-./deepmhcpro -i ./data/indep/MBL2023.txt -w PMC -m EL -r --verbose
-```
-###### CD4+ T cell epitope prediction with evaluation (SA; artificial negatives)
-```bash
-./deepmhcpro -i ./data/indep/EPI2023.txt -w PMC -m Epi -r --verbose \
---evaluation
-```
-###### Immunogenicity test prediction with evaluation (SA; natural negatives)
-```bash
-./deepmhcpro -i ./data/finetune/immun_test.txt -w PMC-Immu -m EL -r --verbose \
---evaluation
-
-./deepmhcpro -i ./data/finetune/immun_test.txt -w PMC -m EL -r --verbose \
---evaluation
-```
-###### Neoepitope immunogenicity prediction with evaluation (MA; artificial negatives)
-```bash
-./deepmhcpro -i ./data/indep/NEO2019.15.txt -w PMC-Immu -m EL -r --max-pool --verbose \
---evaluation
-
-./deepmhcpro -i ./data/indep/NEO2019.15.txt -w PMC -m Epi -r --max-pool --verbose \
---evaluation
-```
-Since our model was fine-tuned only on single-allele immunogenic data, so we 
-utilize max-pooling method to handle MA immunogenic test data.
-###### Generate sequence logos for MHC-II specificity (motif preference)
-```bash
-# Single Specificity
-./deepmhcpro -i ./data/random/seq2logo.txt -w PMC -m EL -a DRB1_0101 --motif "./figures/DRB1_0101.png"
-# Canonical and Reverse Binding Speficity
-./deepmhcpro -i ./data/random/seq2logo.txt -w PMC -m EL -r -a HLA-DPA10202-DPB10202 --motif "./figures/DPA10202_DPB10202.png"
-# P4-speficity and P6-speficity in Bi-speficity -> Electron / Hydorgen Bond
-./deepmhcpro -i ./data/random/seq2logo.txt -w PMC -m EL -r -a DRB1_0801 --motif "./figures/DRB1_0801.png" --mask B28
-./deepmhcpro -i ./data/random/seq2logo.txt -w PMC -m EL -r -a DRB1_1402 --motif "./figures/DRB1_1402.png" --mask B13
-```
-<p align="center">
-  <img src="./figures/DRB1_0101.png" width="22%" />
-  <img src="./figures/DPA10202_DPB10202.png" width="44%" />
-  <img src="./figures/DRB1_0801.png" width="44%" />
-  <img src="./figures/DRB1_1402.png" width="44%" />
-</p>
-
-
 ### Required arguments
 * ```-i <file>``` or  ```--input <file>```: input file path
 * `-o <file>` or `--output <file>`: output file path
 * `-m <BA|EL|Epi>` or `--mode <BA|EL|Epi>`: scoring output mode 
-Choose a scoring output among binding affinity, ligand presentation and epitope identification
+Choose a scoring output among binding affinity \<BA\>, ligand presentation \<EL\> and epitope identification \<Epi\>
 * `-w <weight>` or `--weight_name <weight>`: model weight name
 * `-a <alleles>` or `--alleles <alleles>`: allele name
 Specify allele name and allow multiple alleles, seperated by commas
@@ -127,6 +64,70 @@ Specify allele name and allow multiple alleles, seperated by commas
 * `--evaluation`: Whether to evaluate model performance on benchmark datasets
 * `-s` or `--start-id`: Start id of 25 models for ensemble
 * `-n` or `--num_models`: End id of 25 models for ensemble
+
+### Commands
+##### Single-allele presentation prediction with evaluation
+```bash
+# No context information 
+./deepmhcpro -i ./data/indep/SA2023.txt -w PMC -m EL -r \
+--evaluation
+# Use context information
+./deepmhcpro -i ./data/indep/SA2023.txt -w PMC -m EL -r -c \
+--evaluation
+```
+##### Multi-allele antigen presentation prediction with evaluation
+```bash
+# No context information 
+./deepmhcpro -i ./data/indep/MA2024.txt -w PMC -m EL -r \
+--evaluation
+# Use context information
+./deepmhcpro -i ./data/indep/MA2024.txt -w PMC -m EL -r -c \
+--evaluation
+```
+##### Microbial antigen presentation prediction with evaluation
+```bash
+./deepmhcpro -i ./data/indep/MBL2023.txt -w PMC -m EL -r --verbose
+```
+##### CD4+ T cell epitope prediction with evaluation (SA; artificial negatives)
+```bash
+./deepmhcpro -i ./data/indep/EPI2023.txt -w PMC -m Epi -r --verbose \
+--evaluation
+```
+##### Immunogenicity test prediction with evaluation (SA; natural negatives)
+```bash
+./deepmhcpro -i ./data/finetune/immun_test.txt -w PMC-Immu -m EL -r --verbose \
+--evaluation
+
+./deepmhcpro -i ./data/finetune/immun_test.txt -w PMC -m EL -r --verbose \
+--evaluation
+```
+##### Neoepitope immunogenicity prediction with evaluation (MA; artificial negatives)
+```bash
+./deepmhcpro -i ./data/indep/NEO2019.15.txt -w PMC-Immu -m EL -r --max-pool --verbose \
+--evaluation
+
+./deepmhcpro -i ./data/indep/NEO2019.15.txt -w PMC -m Epi -r --max-pool --verbose \
+--evaluation
+```
+Since our model was fine-tuned only on single-allele immunogenic data, so we 
+utilize max-pooling method to handle MA immunogenic test data.
+##### Generate sequence logos for MHC-II specificity (motif preference)
+```bash
+# Single Specificity
+./deepmhcpro -i ./data/random/seq2logo.txt -w PMC -m EL -a DRB1_0101 --motif "./figures/DRB1_0101.png"
+# Canonical and Reverse Binding Speficity
+./deepmhcpro -i ./data/random/seq2logo.txt -w PMC -m EL -r -a HLA-DPA10202-DPB10202 --motif "./figures/DPA10202_DPB10202.png"
+# P4-speficity and P6-speficity in Bi-speficity -> Electron / Hydorgen Bond
+./deepmhcpro -i ./data/random/seq2logo.txt -w PMC -m EL -r -a DRB1_0801 --motif "./figures/DRB1_0801.png" --mask B28
+./deepmhcpro -i ./data/random/seq2logo.txt -w PMC -m EL -r -a DRB1_1402 --motif "./figures/DRB1_1402.png" --mask B13
+```
+<p align="center">
+  <img src="./figures/DRB1_0101.png" width="22%" />
+  <img src="./figures/DPA10202_DPB10202.png" width="44%" />
+  <img src="./figures/DRB1_0801.png" width="44%" />
+  <img src="./figures/DRB1_1402.png" width="44%" />
+</p>
+
 
 ### Output formation
 * `Num`: Line number
