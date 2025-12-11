@@ -266,6 +266,7 @@ def main_process(input_path, output_path, mode, start_id, num_models, allele, co
         pos_num = 1 if ("NEO2019" in input_path.name or "immun_test" in input_path.name) else 3
         get_metrics(group_names, targets_list, mil_scores, pos_num)
     return
-                            
+
+
 if __name__ == '__main__':
     main_process()
