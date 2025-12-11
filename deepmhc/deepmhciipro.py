@@ -21,7 +21,7 @@ from deepmhcii.data_utils import *
 from deepmhcii.datasets import MHCIIDataset, ELMHCDataset
 from deepmhcii.models import Model
 from deepmhcii.networks import *
-from deepmhcii.evaluation import get_metrics, CUTOFF
+from deepmhcii.evaluation import get_metrics, output_res, CUTOFF
 
 
 
@@ -157,8 +157,9 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
 @click.option('--max-pool', is_flag=True, help="Whether to use max-pooling or attention-base multiple instance learning")
 @click.option('--advanced', is_flag=True, help="Whether to display score of each allele for multi-allele samples")
 @click.option('--evaluation', is_flag=True, help="Whether to evaluate model performance")
+@click.option('--eval_file', type=click.Path(), default=None, help="Evaluation file path")
 @click.option('--verbose', is_flag=True, help="Whether to print output")
-def main_process(input_path, output_path, mode, start_id, num_models, allele, context, reverse, sort, mask, advanced, weight_name, max_pool, motif, evaluation, verbose):
+def main_process(input_path, output_path, mode, start_id, num_models, allele, context, reverse, sort, mask, advanced, weight_name, max_pool, motif, evaluation, eval_file, verbose):
 
     if input_path == None:
         print("You must specify input file by using -i")
@@ -264,7 +265,10 @@ def main_process(input_path, output_path, mode, start_id, num_models, allele, co
             data = data.groupby(["patient", "pep"]).max()
             group_names, targets_list, mil_scores = data.index.get_level_values("patient"), data["label"], data["score"]
         pos_num = 1 if ("NEO2019" in input_path.name or "immun_test" in input_path.name) else 3
-        get_metrics(group_names, targets_list, mil_scores, pos_num)
+        if eval_file is not None:
+            output_res(group_names, targets_list, mil_scores, pos_num, eval_file)
+        else:
+            get_metrics(group_names, targets_list, mil_scores, pos_num)
     return
 
 

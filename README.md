@@ -178,4 +178,3 @@ Also thank the developers of [Seq2logo](https://services.healthtech.dtu.dk/servi
 ## Declaration
 It is free for non-commercial use. For commercial use, please contact 
 Mr. Jinxing Li and Prof. Shanfeng Zhu (zhusf@fudan.edu.cn).
-

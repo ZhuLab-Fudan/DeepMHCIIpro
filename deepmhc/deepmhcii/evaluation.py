@@ -6,6 +6,7 @@ from collections import namedtuple
 from scipy.stats import spearmanr
 from sklearn.metrics import roc_auc_score, precision_recall_curve, auc
 from logzero import logger
+from pathlib import Path
 
 __all__ = ['CUTOFF', 'get_auc', 'get_pcc', 'get_srcc', 'get_group_metrics', 'output_res', 'tanh_decay']
 
@@ -57,3 +58,19 @@ def get_metrics(mhc_names, targets, scores, pos_num) -> None:
     metrics = np.mean(metrics, axis=0)
     logger.info(f'AUC: {metrics[0]:3f} AUC01: {metrics[1]:3f} PCC: {metrics[2]:3f} SRCC: {metrics[3]:3f} AUPR: {metrics[4]:3f}')
     return metrics
+
+def output_res(mhc_names, targets, scores, pos_num, output_path: Path):
+    output_path = Path(output_path).resolve() 
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    eval_out_path = output_path.with_suffix('.csv')
+    mhc_names, targets, scores, metrics = np.asarray(mhc_names), np.asarray(targets), np.asarray(scores), []
+    with open(eval_out_path, 'w') as fp:
+        fp.write(",".join(['allele', 'total', 'positive', 'AUC', 'AUC0.1', 'PCC', 'SRCC', 'AUPR'])+"\n")
+        mhc_groups, auc, auc01, pcc, srcc, aupr = get_group_metrics(mhc_names, targets, scores, reduce=False, pos_num=pos_num)
+        for mhc_name_, auc_, auc01_, pcc_, srcc_, aupr_ in zip(mhc_groups, auc, auc01, pcc, srcc, aupr):
+            t_ = targets[mhc_names == mhc_name_]
+            fp.write(",".join(str(i) for i in [mhc_name_, len(t_), len(t_[t_ >= CUTOFF]), auc_, auc01_, pcc_, srcc_, aupr_])+"\n")
+            metrics.append((auc_, auc01_, pcc_, srcc_, aupr_))
+        metrics = np.mean(metrics, axis=0)
+        fp.write(",".join(str(i) for i in [''] * 3 + metrics.tolist()))
+    logger.info(f'AUC: {metrics[0]:3f} AUC01: {metrics[1]:3f} PCC: {metrics[2]:3f} SRCC: {metrics[3]:3f} AUPR: {metrics[4]:3f}')
