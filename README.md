@@ -116,9 +116,9 @@ deepmhcpro -i ./data/random/seq2logo.txt --mode EL --reverse --allele DRB1_1402 
   <img src="./figures/DRB1_1402.png" width="44%" />
 </p>
 
-### Input formation
+### Input formation and run examples
 
-* If label is known, the following one is also supported for model training and evaluation.
+* If label is known, the following one is supported for model training and evaluation.
 
   | Peptide        | Label Score | Cell Line / MHC Allele  | Context        |
   |----------------|-------------|-------------------------|----------------|
