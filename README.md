@@ -122,11 +122,11 @@ deepmhcpro -i ./data/random/seq2logo.txt --mode EL --reverse --allele DRB1_1402 
 
   | Peptide        | Label Score | Cell Line / MHC Allele  | Context        |
   |----------------|-------------|-------------------------|----------------|
-  | AAFKVAATAANAA  | 1           | DRB1*04:01              | KIDAAFNAAPAN   |
+  | AAFKVAATAANAA  | 1           | DRB1_0401              | KIDAAFNAAPAN   |
 
   ```bash
   example_file1=$(python -c "import site; print(site.getsitepackages()[0])")/deepmhc/data/MHCII_example1.txt
-  deepmhcpro -i $example_file --mode EL --verbose --allele DRB1_0101,HLA-DPA10103-DPB10101
+  deepmhcpro -i $example_file1 --mode EL --verbose --allele DRB1_0101,HLA-DPA10103-DPB10101
   ```
 
 * If label is unknown, accroding to wthether to specify input allele, two formations can be used.
