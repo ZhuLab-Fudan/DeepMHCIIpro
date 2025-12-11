@@ -39,17 +39,17 @@ Choose a scoring output from the following options:
 Specify allele name and allow multiple alleles, seperated by commas
 * `-c` or `--context`: Whether to use context information
 * `-r` or `--reverse`: Whether to consider the reverse binding mode
-<!-- * `-s` or `--start-id`: Start id of 25 models for ensemble
-* `-n` or `--num_models`: End id of 25 models for ensemble
-* `-w <weight>` or `--weight_name <weight>`: model weight name -->
 * `-a <alleles>` or `--alleles <alleles>`: allele name
 * `--motif`: Save path for generated sequence motif
 * `--mask`: Specify the masked interaction pair, such as P6-B28
 * `--verbose`: Whether to print output
 * `--max-pool`: Whether to use max-pooling or attention-based MIL
 * `--evaluation`: Whether to evaluate model performance on benchmark datasets
-<!-- * `--sort`: Whether to sort the output scores -->
-<!-- * `--advanced`: Whether to display score of each allele for multi-allele samples -->
+<!-- * `--sort`: Whether to sort the output scores
+* `--advanced`: Whether to display score of each allele for multi-allele samples
+* `-s` or `--start-id`: Start id of 25 models for ensemble
+* `-n` or `--num_models`: End id of 25 models for ensemble
+* `-w <weight>` or `--weight_name <weight>`: model weight name -->
 
 ### Commands
 ##### Single-allele presentation prediction with evaluation
