@@ -12,15 +12,18 @@ pip install deepmhcpro-1.0.1-py3-none-any.whl
 deepmhcpro --help 
 ```
 
-## Download data
+## Download data to current directory
 The following data are available at [Zenodo](https://doi.org/10.5281/zenodo.15844437). Moreover, all trained model weights are also provide in the above link.
+```bash
+ls ./data
+```
 
 ## Usage
 
 ### Required arguments
 * ```-i <file>``` or  ```--input <file>```: input file path
-* `-m <BA|EL|Epi>` or `--mode <BA|EL|Epi>`: scoring output mode
-Choose a scoring output among binding affinity \<BA\>, ligand presentation \<EL\> and epitope identification \<Epi\>
+* `-m <BA|EL|Epi>` or `--mode <BA|EL|Epi|Immu>`: scoring output mode
+Choose a scoring output among binding affinity \<BA\>, ligand presentation \<EL\>, epitope identification \<Epi\> and immunogenicity prediction \<Immu\>.
 * `-o <file>` or `--output <file>`: output file path
 
 ### Optional arguments
@@ -43,44 +46,46 @@ Specify allele name and allow multiple alleles, seperated by commas
 ##### Single-allele presentation prediction with evaluation
 ```bash
 # No context information 
-deepmhcpro -i ./data/indep/SA2023.txt-m EL -r \
+deepmhcpro --i ./data/indep/SA2023.txt --mode EL --reverse \
 --evaluation
 # Use context information
-deepmhcpro -i ./data/indep/SA2023.txt-m EL -r -c \
+deepmhcpro -i ./data/indep/SA2023.txt --mode EL --reverse --context \
 --evaluation
 ```
 ##### Multi-allele antigen presentation prediction with evaluation
 ```bash
 # No context information 
-deepmhcpro -i ./data/indep/MA2024.txt-m EL -r \
+deepmhcpro -i ./data/indep/MA2024.txt --mode EL --reverse \
 --evaluation
 # Use context information
-deepmhcpro -i ./data/indep/MA2024.txt-m EL -r -c \
+deepmhcpro -i ./data/indep/MA2024.txt --mode EL --reverse --context \
 --evaluation
 ```
 ##### Microbial antigen presentation prediction with evaluation
 ```bash
-deepmhcpro -i ./data/indep/MBL2023.txt-m EL -r --verbose
+deepmhcpro -i ./data/indep/MBL2023.txt --mode EL --reverse --verbose
 ```
 ##### CD4+ T cell epitope prediction with evaluation (SA; artificial negatives)
 ```bash
-deepmhcpro -i ./data/indep/EPI2023.txt-m Epi -r --verbose \
+deepmhcpro -i ./data/indep/EPI2023.txt --mode Epi --reverse --verbose \
 --evaluation
 ```
 ##### Immunogenicity test prediction with evaluation (SA; natural negatives)
 ```bash
-deepmhcpro -i ./data/finetune/immun_test.txt -w PMC-Immu -m EL -r --verbose \
+# Use fintuned model on immunological data
+deepmhcpro -i ./data/finetune/immun_test.txt --mode Immu --reverse --verbose \
 --evaluation
-
-deepmhcpro -i ./data/finetune/immun_test.txt-m EL -r --verbose \
+# Use antigen presentation prediction
+deepmhcpro -i ./data/finetune/immun_test.txt --mode EL --reverse --verbose \
 --evaluation
 ```
 ##### Neoepitope immunogenicity prediction with evaluation (MA; artificial negatives)
 ```bash
-deepmhcpro -i ./data/indep/NEO2019.15.txt -w PMC-Immu -m EL -r --max-pool --verbose \
+# Use fintuned model on immunological data
+deepmhcpro -i ./data/indep/NEO2019.15.txt --mode Immu --reverse --max-pool --verbose \
 --evaluation
-
-deepmhcpro -i ./data/indep/NEO2019.15.txt-m Epi -r --max-pool --verbose \
+# Use epitope recognization prediction
+deepmhcpro -i ./data/indep/NEO2019.15.txt --mode Epi --reverse --max-pool --verbose \
 --evaluation
 ```
 Since our model was fine-tuned only on single-allele immunogenic data, so we 
@@ -88,12 +93,12 @@ utilize max-pooling method to handle MA immunogenic test data.
 ##### Generate sequence logos for MHC-II specificity (motif preference)
 ```bash
 # Single Specificity
-deepmhcpro -i ./data/random/seq2logo.txt-m EL -a DRB1_0101 --motif "./figures/DRB1_0101.png"
+deepmhcpro -i ./data/random/seq2logo.txt --mode EL --allele DRB1_0101 --motif "./figures/DRB1_0101.png"
 # Canonical and Reverse Binding Speficity
-deepmhcpro -i ./data/random/seq2logo.txt-m EL -r -a HLA-DPA10202-DPB10202 --motif "./figures/DPA10202_DPB10202.png"
+deepmhcpro -i ./data/random/seq2logo.txt --mode EL --reverse --allele HLA-DPA10202-DPB10202 --motif "./figures/DPA10202_DPB10202.png"
 # P4-speficity and P6-speficity in Bi-speficity -> Electron / Hydorgen Bond
-deepmhcpro -i ./data/random/seq2logo.txt-m EL -r -a DRB1_0801 --motif "./figures/DRB1_0801.png" --mask B28
-deepmhcpro -i ./data/random/seq2logo.txt-m EL -r -a DRB1_1402 --motif "./figures/DRB1_1402.png" --mask B13
+deepmhcpro -i ./data/random/seq2logo.txt --mode EL --reverse --allele DRB1_0801 --motif "./figures/DRB1_0801.png" --mask B28
+deepmhcpro -i ./data/random/seq2logo.txt --mode EL --reverse --allele DRB1_1402 --motif "./figures/DRB1_1402.png" --mask B13
 ```
 <p align="center">
   <img src="./figures/DRB1_0101.png" width="22%" />
