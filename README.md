@@ -49,10 +49,10 @@ DeepMHCIIpro/
 * `-m <BA|EL|Epi>` or `--mode <BA|EL|Epi>`: scoring output mode 
 Choose a scoring output among binding affinity \<BA\>, ligand presentation \<EL\> and epitope identification \<Epi\>
 * `-w <weight>` or `--weight_name <weight>`: model weight name
-* `-a <alleles>` or `--alleles <alleles>`: allele name
-Specify allele name and allow multiple alleles, seperated by commas
 
 ### Optional arguments
+* `-a <alleles>` or `--alleles <alleles>`: allele name
+Specify allele name and allow multiple alleles, seperated by commas
 * `-c` or `--context`: Whether to use context information
 * `-r` or `--reverse`: Whether to consider the reverse binding mode
 * `--motif`: Save path for generated sequence motif
