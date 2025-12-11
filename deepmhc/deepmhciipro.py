@@ -122,7 +122,7 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
             
         for k in (-s_).argsort()[:int(1*len(s_))] if sort else range(len(s_)):
 
-            piece = [str(k+1), data_list[k][0], data_list[k][2], cell_best_allele[k], data_list[k][2][p_[k]: p_[k] + 9], int(bm_[k][p_[k]]), "{:.6f}".format(s_[k]), "{:.3f}".format(ranks[k])] + \
+            piece = [str(k+1), data_list[k][0], data_list[k][1], cell_best_allele[k], data_list[k][1][p_[k]: p_[k] + 9], int(bm_[k][p_[k]]), "{:.6f}".format(s_[k]), "{:.3f}".format(ranks[k])] + \
                     ([p4_[k]] if bi_s_!=None else []) + \
                     ([ ";".join(cell_allele_list[k]), ";".join([str(i) for i in np.round(cell_allele_score[k],3)])] if advanced else [])
             
@@ -220,9 +220,9 @@ def main_process(input_path, output_path, mode, start_id, num_models, allele, co
         for k in (-s_).argsort()[:int(0.01*len(s_))]:
             bind_mode = int(bm_[k][p_[k]]) if bi_s_ == None  else bm_[k]
             if bind_mode == 0:
-                spe1_instances.append(data_list[k][2][p_[k]: p_[k] + 9])
+                spe1_instances.append(data_list[k][1][p_[k]: p_[k] + 9])
             else:
-                spe2_instances.append(data_list[k][2][p_[k]: p_[k] + 9])
+                spe2_instances.append(data_list[k][1][p_[k]: p_[k] + 9])
         instance_list = [spe1_instances, spe2_instances]
         spe1_frac, spe2_frac = len(spe1_instances) / (0.0001*len(s_)), len(spe2_instances) / (0.0001*len(s_))
         name_list = [f"{allele}-Can({spe1_frac}%)", f"{allele}-Rev({spe2_frac}%)"] if bi_s_ == None \

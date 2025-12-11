@@ -17,3 +17,4 @@ dependencies:
     - --extra-index-url https://download.pytorch.org/whl/cu116
     - --find-links https://pytorch-geometric.com/whl/torch-1.13.1+cu116.html
     - torch==1.13.1+cu116
+    - logomaker==0.8.7
