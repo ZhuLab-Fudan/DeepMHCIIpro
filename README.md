@@ -116,8 +116,8 @@ deepmhcpro -i ./data/random/seq2logo.txt-m EL -r -a DRB1_1402 --motif "./figures
 * `Allele_Names`: Each allele name
 * `Allele_EL_Scores`: Each allele score for presentation
 
-### Source code installation (For experiment validations)
-All independent test datasets and trained model weights across multiple versions are publicly available, allowing users to fully reproduce our experimental results. The Python version can be manually modified in the environment.yaml file if needed.
+### For experiment validations
+All trained model weights across multiple versions are publicly available, allowing users to fully reproduce our experimental results. The Python version can be manually modified in the environment.yaml file if needed.
 ```bash
 git clone https://github.com/lijxgit/DeepMHCIIpro.git && cd DeepMHCIIpro
 conda env create -f environment.yaml
@@ -126,8 +126,10 @@ wget -O model-weights.zip "https://zenodo.org/records/15280831/files/model-weigh
 unzip model-weights.zip && mv mhcii/ deepmhc/models/ 
 deepmhcpro --help 
 ```
+* `-w <weight>` or `--weight_name <weight>`: model weight name -->
+Specified name of model weight, the options are as follow: \<PMC | PM | Pan | Mix\>.
 
-## Repo contents
+<!-- ## Repo contents
 ```shell
 DeepMHCIIpro/
 │── configs/         # Configuration files (e.g., model parameters, training settings)
@@ -141,7 +143,7 @@ DeepMHCIIpro/
 │── deepmhcpro       # Executable python script
 │── README.md        # Project documentation
 │── requirements.txt # List of dependencies
-```
+``` -->
 
 ## Acknowledgements
 DeepMHCIIpro uses the following separate libraries and packages: 
