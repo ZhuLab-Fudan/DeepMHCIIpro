@@ -27,17 +27,17 @@ Choose a scoring output among binding affinity \<BA\>, ligand presentation \<EL\
 Specify allele name and allow multiple alleles, seperated by commas
 * `-c` or `--context`: Whether to use context information
 * `-r` or `--reverse`: Whether to consider the reverse binding mode
-* `-a <alleles>` or `--alleles <alleles>`: allele name
-* `-s` or `--start-id`: Start id of 25 models for ensemble
+<!-- * `-s` or `--start-id`: Start id of 25 models for ensemble
 * `-n` or `--num_models`: End id of 25 models for ensemble
-* `-w <weight>` or `--weight_name <weight>`: model weight name
+* `-w <weight>` or `--weight_name <weight>`: model weight name -->
+* `-a <alleles>` or `--alleles <alleles>`: allele name
 * `--motif`: Save path for generated sequence motif
 * `--mask`: Specify the masked interaction pair, such as P6-B28
-* `--sort`: Whether to sort the output scores
 * `--verbose`: Whether to print output
 * `--max-pool`: Whether to use max-pooling or attention-based MIL
-* `--advanced`: Whether to display score of each allele for multi-allele samples
 * `--evaluation`: Whether to evaluate model performance on benchmark datasets
+<!-- * `--sort`: Whether to sort the output scores -->
+<!-- * `--advanced`: Whether to display score of each allele for multi-allele samples -->
 
 ### Commands
 ##### Single-allele presentation prediction with evaluation
