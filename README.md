@@ -12,16 +12,6 @@ pip install deepmhcpro-1.0.1-py3-none-any.whl
 deepmhcpro --help 
 ```
 
-<!-- ##### Source code installation (seperately download model weights)
-```bash
-git clone https://github.com/lijxgit/DeepMHCIIpro.git && cd DeepMHCIIpro
-conda env create -f environment.yaml
-conda activate DeepMHCIIpro 
-wget -O model-weights.zip "https://zenodo.org/records/15280831/files/model-weights.zip?download=1"
-unzip model-weights.zip && mv mhcii/ deepmhc/models/ 
-deepmhcpro --help 
-``` -->
-
 ## Download data
 The following data are available at [Zenodo](https://doi.org/10.5281/zenodo.15844437). Moreover, all trained model weights are also provide in the above link.
 
@@ -125,6 +115,17 @@ deepmhcpro -i ./data/random/seq2logo.txt-m EL -r -a DRB1_1402 --motif "./figures
 * `Bi-Spec`: Bi-specificity
 * `Allele_Names`: Each allele name
 * `Allele_EL_Scores`: Each allele score for presentation
+
+### Source code installation (For experiment validations)
+All the independent test data and trained model weights are available.
+```bash
+git clone https://github.com/lijxgit/DeepMHCIIpro.git && cd DeepMHCIIpro
+conda env create -f environment.yaml
+conda activate DeepMHCIIpro 
+wget -O model-weights.zip "https://zenodo.org/records/15280831/files/model-weights.zip?download=1"
+unzip model-weights.zip && mv mhcii/ deepmhc/models/ 
+deepmhcpro --help 
+```
 
 ## Repo contents
 ```shell
