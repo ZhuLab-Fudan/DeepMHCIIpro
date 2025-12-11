@@ -167,6 +167,7 @@ If both labels and alleles are known, the input can be structured as follows, wh
 
 The output results are also provided in two formats. With the `--verbose` option, they can be printed in aligned columns by inserting a variable number of spaces between values. Alternatively, using `-o ./"result.csv"`, the results are saved to a CSV file, where all fields are consistently separated by commas.
 ```bash
+example_file3=$(python -c "import site; print(site.getsitepackages()[0])")/deepmhc/data/MHCII_example3.txt
 deepmhcpro -i $example_file3 --mode EL --allele DRB1_0101,HLA-DPA10103-DPB10101,HLA-DQA10101-DQB10201 -o ./"result.csv"
   ```
 
