@@ -23,10 +23,17 @@ ls ./data
 ## Usage
 
 ### Required arguments
-* ```-i <file>``` or  ```--input <file>```: input file path
-* `-m <BA|EL|Epi>` or `--mode <BA|EL|Epi|Immu>`: scoring output mode
-Choose a scoring output among binding affinity \<BA\>, ligand presentation \<EL\>, epitope identification \<Epi\> and immunogenicity prediction \<Immu\>.
+* `-i <file>` or  `--input <file>`: input file path
 * `-o <file>` or `--output <file>`: output file path
+* `-m <BA|EL|Epi|Immu>` or `--mode <BA|EL|Epi|Immu>`: scoring output mode
+Choose a scoring output from the following options:
+
+  | Abbreviation | Scoring Output                |
+  |-------------|--------------------------------|
+  | `BA`        | Binding Affinity               |
+  | `EL`        | Eluted Ligand presentation     |
+  | `Epi`       | Epitope identification         |
+  | `Immu`      | Immunogenicity prediction      |
 
 ### Optional arguments
 Specify allele name and allow multiple alleles, seperated by commas
