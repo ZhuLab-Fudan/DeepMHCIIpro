@@ -118,7 +118,8 @@ deepmhcpro -i ./data/random/seq2logo.txt --mode EL --reverse --allele DRB1_1402 
 
 ### Input formation and run examples
 
-* If label is known, the following one is supported for model training and evaluation.
+* According to whether input alleles are specified, two formats can be used.
+If both labels and alleles are known, the input can be structured as follows, which is supported for model training and evaluation.
 
   | Peptide        | Label Score | Cell Line / MHC Allele  | Context        |
   |----------------|-------------|-------------------------|----------------|
@@ -129,7 +130,7 @@ deepmhcpro -i ./data/random/seq2logo.txt --mode EL --reverse --allele DRB1_1402 
   deepmhcpro -i $example_file1 --mode EL --verbose --evaluation
   ```
 
-* If label is unknown, accroding to wthether to specify input allele, two formations can be used.
+<!-- * If label is unknown, accroding to wthether to specify input allele, two formations can be used.
 
   | Peptide | Cell Line or MHC Allele | Context       |
   |--------------|--------------------|---------------|
@@ -138,9 +139,9 @@ deepmhcpro -i ./data/random/seq2logo.txt --mode EL --reverse --allele DRB1_1402 
   ```bash
   example_file2=$(python -c "import site; print(site.getsitepackages()[0])")/deepmhc/data/MHCII_example2.txt
   deepmhcpro -i $example_file2 --mode EL --verbose
-  ```
+  ``` -->
 
-* Use `--allele` to specify input alleles, which can be used for any allele combination, or say, any cell line.
+* The other format uses `--allele` to designate the input alleles, allowing fully flexible combinations of multiple alleles, or equivalently, any specified cell line.
 
   | Peptide      | Context            |
   |--------------|--------------------|
