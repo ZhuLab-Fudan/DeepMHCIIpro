@@ -12,9 +12,11 @@ pip install deepmhcpro-1.0.1-py3-none-any.whl
 deepmhcpro --help 
 ```
 
-## Download data to current directory
+## Download data
 The following data are available at [Zenodo](https://doi.org/10.5281/zenodo.15844437). Moreover, all trained model weights are also provide in the above link.
 ```bash
+wget https://zenodo.org/records/15844437/files/use-data.zip
+unzip use-data.zip
 ls ./data
 ```
 
@@ -46,7 +48,7 @@ Specify allele name and allow multiple alleles, seperated by commas
 ##### Single-allele presentation prediction with evaluation
 ```bash
 # No context information 
-deepmhcpro --i ./data/indep/SA2023.txt --mode EL --reverse \
+deepmhcpro -i ./data/indep/SA2023.txt --mode EL --reverse \
 --evaluation
 # Use context information
 deepmhcpro -i ./data/indep/SA2023.txt --mode EL --reverse --context \
