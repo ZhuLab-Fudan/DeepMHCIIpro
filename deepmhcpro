@@ -144,7 +144,7 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
 @click.option('-i', '--input-path', type=click.Path(exists=True), help='Input file path')
 @click.option('-o', '--output-path', type=click.Path(), help='Output file path', default=None)
 @click.option('-m', '--mode', type=click.Choice(('BA', 'EL', 'Epi', 'Immu')), default='EL', help="Choose a scoring output among binding affinity, ligand presentation and epitope identification")
-@click.option('-w', '--weight-name', type=str, required=True, help='Specified name of model weight')
+@click.option('-w', '--weight-name', type=str, default='PMC', help='Specified name of model weight')
 @click.option('-s', '--start-id', default=0, help="Start id of 25 models for ensemble")
 @click.option('-n', '--num-models', default=25, help="End id of 25 models for ensemble")
 @click.option('-a', '--allele', default=None, help="Specify allele name and allow multiple alleles, seperated by commas")
