@@ -122,7 +122,7 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
             
         for k in (-s_).argsort()[:int(1*len(s_))] if sort else range(len(s_)):
 
-            piece = [str(k+1), data_list[k][0], data_list[k][1], cell_best_allele[k], data_list[k][1][p_[k]: p_[k] + 9], int(bm_[k][p_[k]]), "{:.6f}".format(s_[k]), "{:.3f}".format(ranks[k])] + \
+            piece = [str(k+1), data_list[k][0][:25], data_list[k][1], cell_best_allele[k], data_list[k][1][p_[k]: p_[k] + 9], int(bm_[k][p_[k]]), "{:.6f}".format(s_[k]), "{:.3f}".format(ranks[k])] + \
                     ([p4_[k]] if bi_s_!=None else []) + \
                     ([ ";".join(cell_allele_list[k]), ";".join([str(i) for i in np.round(cell_allele_score[k],3)])] if advanced else [])
             
