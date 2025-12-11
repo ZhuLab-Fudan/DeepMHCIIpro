@@ -131,6 +131,7 @@ deepmhcpro -i ./data/random/seq2logo.txt --mode EL --reverse --allele DRB1_1402 
 * `Allele_EL_Scores`: Each allele score for presentation
 
 ### For experiment validations
+##### source code installation
 All trained model weights across multiple versions are publicly available, allowing users to fully reproduce our experimental results. The Python version can be manually modified in the environment.yaml file if needed.
 ```bash
 git clone https://github.com/lijxgit/DeepMHCIIpro.git && cd DeepMHCIIpro
@@ -140,8 +141,16 @@ wget -O model-weights.zip "https://zenodo.org/records/15280831/files/model-weigh
 unzip model-weights.zip && mv mhcii/ deepmhc/models/ 
 deepmhcpro --help 
 ```
+##### load selective weight arguments
 * `-w <weight>` or `--weight_name <weight>`: model weight name -->
 Specified name of model weight, the options are as follow: \<PMC | PM | Pan | Mix\>.
+
+  | Abbreviation | Model Version      | Training Data Resource     |
+  |--------------|--------------------|----------------------------|
+  | `PMC`        | DeepMHCIIpro       | NetMHCII**P**an, **M**ixMHC2pred, **C**APTAn |
+  | `PM`         | DeepMHCIIpro (PM)  | NetMHCII**P**an, **M**ixMHC2pred   |
+  | `Pan`        | DeepMHCIIpro (Pan) | NetMHCII**Pan**                |
+  | `Mix`        | DeepMHCIIpro (Mix) | **Mix**MHC2pred                |
 
 <!-- ## Repo contents
 ```shell

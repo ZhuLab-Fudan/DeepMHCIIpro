@@ -3,4 +3,5 @@ include deepmhc/configure/*
 include deepmhc/data/*
 include deepmhc/models/mhci/*
 include deepmhc/models/mhcii/*
+include deepmhc/models/__init__.py
 exclude deepmhc/main.py
