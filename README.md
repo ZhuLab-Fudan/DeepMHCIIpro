@@ -165,6 +165,12 @@ If both labels and alleles are known, the input can be structured as follows, wh
 * `Allele_Names`: Each allele name
 * `Allele_EL_Scores`: Each allele score for presentation
 
+The output results are also provided in two formats. First, they can be printed in aligned columns by inserting a variable number of spaces between values. Second, they can be saved to a CSV file, where all fields are consistently separated by commas.
+```bash
+  example_file3=$(python -c "import site; print(site.getsitepackages()[0])")/deepmhc/data/MHCII_example3.txt
+  deepmhcpro -i $example_file3 --mode EL --allele DRB1_0101,HLA-DPA10103-DPB10101,HLA-DQA10101-DQB10201 -o ./"result.csv"
+  ```
+
 ### For experiment validations
 ##### source code installation
 All trained model weights across multiple versions are publicly available, allowing users to fully reproduce our experimental results. The Python version can be manually modified in the environment.yaml file if needed.
