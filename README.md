@@ -148,7 +148,7 @@ deepmhcpro -i ./data/random/seq2logo.txt --mode EL --reverse --allele DRB1_1402 
 
   ```bash
   example_file3=$(python -c "import site; print(site.getsitepackages()[0])")/deepmhc/data/MHCII_example3.txt
-  deepmhcpro -i $example_file3 --mode EL --allele DRB1_0101,HLA-DQA10101-DQB10201 --verbose
+  deepmhcpro -i $example_file3 --mode EL --allele DRB1_0101,HLA-DPA10103-DPB10101,HLA-DQA10101-DQB10201 --verbose
   ```
 
 ### Output formation
