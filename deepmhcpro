@@ -15,14 +15,13 @@ import deepmhc
 from deepmhc.configure import *
 from deepmhc.data import MHC_Data_Dir
 from deepmhc.models import MHCII_Model_Dir
-from deepmhcii.data_utils import BA_TYPE, EL_TYPE, pseudo34_pos
+from deepmhc.deepmhcii.data_utils import BA_TYPE, EL_TYPE, pseudo34_pos
 
-from deepmhcii.data_utils import *
-from deepmhcii.datasets import MHCIIDataset, ELMHCDataset
-from deepmhcii.models import Model
-from deepmhcii.networks import *
-from deepmhcii.evaluation import get_metrics, CUTOFF
-
+from deepmhc.deepmhcii.data_utils import *
+from deepmhc.deepmhcii.datasets import MHCIIDataset, ELMHCDataset
+from deepmhc.deepmhcii.models import Model
+from deepmhc.deepmhcii.networks import *
+from deepmhc.deepmhcii.evaluation import get_metrics, CUTOFF
 
 
 def run_model(model, model_path, data_list, data_loader, output_path, bi_s_, 
