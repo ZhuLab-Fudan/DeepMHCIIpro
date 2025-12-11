@@ -55,7 +55,7 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
     best_idxs = np.array([indices[i] + np.argmax(cell_allele_score[i]) for i in range(len(data_list))])
     cell_best_allele = [data_list[i][-2][np.argmax(cell_allele_score[i])] for i in range(len(data_list))]
     
-    if mode in ["EL", "Epi"]:
+    if mode in ["EL", "Epi", "Immu"]:
         if max_pool:
             el_cell_line_score, el_cell_line_rank = np.mean(el_scores_list, axis=0), np.mean(el_rank_list, axis=0)
             el_cell_line_score = np.array([np.max(el_cell_line_score[indices[i]:indices[i+1]]) for i in range(len(data_list))])[:, np.newaxis]
@@ -81,6 +81,7 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
             ba_cell_line_rank = np.array([np.sum(ba_weighted_ranks[:, indices[i]:indices[i+1]], axis=1) for i in range(len(data_list))])
         
     mode_mapping = {
+        "Immu": lambda: (np.mean(el_cell_line_score, axis=1), np.mean(el_cell_line_rank, axis=1)),
         "EL": lambda: (np.mean(el_cell_line_score, axis=1), np.mean(el_cell_line_rank, axis=1)),
         "BA": lambda: (np.mean(ba_cell_line_score, axis=1), np.mean(ba_cell_line_rank, axis=1)),
         "Epi": lambda: (np.mean(ba_cell_line_score, axis=1), np.mean(ba_cell_line_rank, axis=1)) \
@@ -144,7 +145,7 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
 @click.option('-i', '--input-path', type=click.Path(exists=True), help='Input file path')
 @click.option('-o', '--output-path', type=click.Path(), help='Output file path', default=None)
 @click.option('-m', '--mode', type=click.Choice(('BA', 'EL', 'Epi', 'Immu')), default='EL', help="Choose a scoring output among binding affinity, ligand presentation and epitope identification")
-@click.option('-w', '--weight-name', type=str, required=True, help='Specified name of model weight')
+@click.option('-w', '--weight-name', type=str, default='PMC', help='Specified name of model weight')
 @click.option('-s', '--start-id', default=0, help="Start id of 25 models for ensemble")
 @click.option('-n', '--num-models', default=25, help="End id of 25 models for ensemble")
 @click.option('-a', '--allele', default=None, help="Specify allele name and allow multiple alleles, seperated by commas")
@@ -170,6 +171,9 @@ def main_process(input_path, output_path, mode, start_id, num_models, allele, co
     data_cnf = yaml.load(Path(MHCII_Data_Conf))
     # model_cnf = ModelII_ELContext_Conf if context else ModelII_EL_Conf
     weight_name = weight_name+"-Context" if context else weight_name
+    if mode == "Immu":
+        weight_name = weight_name+"-Immu"
+        assert not context  # no context information was used for immunology data training
     context_model = "Context" in weight_name
     model_cnf = ModelII_ELContext_Conf if context_model else ModelII_EL_Conf
     with open(MHC_Data_Dir + "/" + data_cnf["threshold_wc_ba" if context_model else "threshold_woc_ba"], 'r') as baf, \
@@ -182,7 +186,7 @@ def main_process(input_path, output_path, mode, start_id, num_models, allele, co
     model_path = Path(MHCII_Model_Dir)/f'{model_name}.pt'
     mhc_name_seq = get_mhc_name_seq(MHC_Data_Dir+"/"+data_cnf['mhc_seq'])
     allele_list_path  = MHC_Data_Dir+"/"+data_cnf['allele_list']
-            
+
     run_model_fn = partial(run_model, mode=mode, start_id=start_id, num_models=num_models, reverse=reverse, sort=sort, advanced=advanced, max_pool=max_pool, verbose=verbose)
     data_list = get_inp_data(input_path, mhc_name_seq, allele_list=allele_list_path, allele_inp=allele if allele!=None else None, use_context=context, model_name=model_name)
     test_dataset = ELMHCDataset(data_list = data_list, mhc_name_seq=mhc_name_seq, data_type="EL", **model_cnf['padding'], thresholds=thresholds)
