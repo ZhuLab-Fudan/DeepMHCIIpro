@@ -36,7 +36,7 @@ setup(
                         'ruamel.yaml>=0.16.12',
                         'tqdm>=4.62.3',
                         'logzero>=1.7.0',
-                        'numpy>=1.22.4,<2.0',
+                        'numpy>=1.22.4',
                         'torch>=1.13.1',
                         'logomaker>=0.8'
                       ],
