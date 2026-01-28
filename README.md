@@ -56,19 +56,19 @@ Specify allele name and allow multiple alleles, seperated by commas
 ```bash
 # No context information 
 deepmhcpro -i ./data/indep/SA2023.txt --mode EL --reverse \
---evaluation
+--evaluation --eval_file "evaluation.csv"
 # Use context information
 deepmhcpro -i ./data/indep/SA2023.txt --mode EL --reverse --context \
---evaluation
+--evaluation --eval_file "evaluation.csv"
 ```
 ##### Multi-allele antigen presentation prediction with evaluation
 ```bash
 # No context information 
 deepmhcpro -i ./data/indep/MA2024.txt --mode EL --reverse \
---evaluation
+--evaluation --eval_file "evaluation.csv"
 # Use context information
 deepmhcpro -i ./data/indep/MA2024.txt --mode EL --reverse --context \
---evaluation
+--evaluation --eval_file "evaluation.csv"
 ```
 ##### Microbial antigen presentation prediction with evaluation
 ```bash
@@ -77,25 +77,25 @@ deepmhcpro -i ./data/indep/MBL2023.txt --mode EL --reverse --verbose
 ##### CD4+ T cell epitope prediction with evaluation (SA; artificial negatives)
 ```bash
 deepmhcpro -i ./data/indep/EPI2023.txt --mode Epi --reverse --verbose \
---evaluation
+--evaluation --eval_file "evaluation.csv"
 ```
 ##### Immunogenicity test prediction with evaluation (SA; natural negatives)
 ```bash
 # Use fintuned model on immunological data
 deepmhcpro -i ./data/finetune/immun_test.txt --mode Immu --reverse --verbose \
---evaluation
+--evaluation --eval_file "evaluation.csv"
 # Use antigen presentation prediction
 deepmhcpro -i ./data/finetune/immun_test.txt --mode EL --reverse --verbose \
---evaluation
+--evaluation --eval_file "evaluation.csv"
 ```
 ##### Neoepitope immunogenicity prediction with evaluation (MA; artificial negatives)
 ```bash
 # Use fintuned model on immunological data
 deepmhcpro -i ./data/indep/NEO2019.15.txt --mode Immu --reverse --max-pool --verbose \
---evaluation
+--evaluation --eval_file "evaluation.csv"
 # Use epitope recognization prediction
 deepmhcpro -i ./data/indep/NEO2019.15.txt --mode Epi --reverse --max-pool --verbose \
---evaluation
+--evaluation --eval_file "evaluation.csv"
 ```
 Since our model was fine-tuned only on single-allele immunogenic data, so we 
 utilize max-pooling method to handle MA immunogenic test data.

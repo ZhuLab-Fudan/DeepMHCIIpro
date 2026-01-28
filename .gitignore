@@ -1,1 +1,6 @@
 deepmhc/models/*
+data
+__pycache__/
+.vscode
+*.csv
+.gitignore
