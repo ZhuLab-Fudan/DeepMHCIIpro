@@ -108,6 +108,13 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
         len_cols = len(cols)
         table_line = [5, 25, 30, 25, 12, 12, 12, 12, 12, 20, 20]
         formats = ["{:^5}", "{:^25}", "{:^30}", "{:^25}", "{:^12}", "{:^12}", "{:^12}", "{:^12}", "{:^12}", "{:^20}", "{:^20}"]
+        if mode == "Immu":
+            bc_idx = cols.index("Bind_Core")
+            cols.pop(bc_idx)
+            len_cols -= 1
+            table_line.pop(bc_idx)
+            formats.pop(bc_idx)
+            
         assert len(table_line) == len(formats)
         fmt_line = sum(table_line[:len_cols])
         fmt_str = ''.join(formats[:len_cols])   
@@ -124,6 +131,9 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
             piece = [str(k+1), data_list[k][0][:25], data_list[k][1], cell_best_allele[k], data_list[k][1][p_[k]: p_[k] + 9], int(bm_[k][p_[k]]), "{:.6f}".format(s_[k]), "{:.3f}".format(ranks[k])] + \
                     ([p4_[k]] if bi_s_!=None else []) + \
                     ([ ";".join(cell_allele_list[k]), ";".join([str(i) for i in np.round(cell_allele_score[k],3)])] if advanced else [])
+            
+            if mode == "Immu":
+                piece.pop(bc_idx)
             
             if output_path!=None and Path(output_path).suffix==".csv":
                 print(",".join([str(i) for i in piece]), file=fp)
