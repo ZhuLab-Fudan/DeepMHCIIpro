@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='deepmhcpro',
-    version='1.0.1',
+    version='1.0.2',
     description='DeepMHC: Peptide MHC binding and presentation prediction for class I and II',
     packages=find_packages(exclude=['results'], include=["deepmhc"]),
     exclude_package_data={"deepmhc": ["main.py"]},
