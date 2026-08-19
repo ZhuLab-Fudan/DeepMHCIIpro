@@ -15,36 +15,30 @@ import deepmhc
 from deepmhc.configure import *
 from deepmhc.data import MHC_Data_Dir
 from deepmhc.models import MHCII_Model_Dir
-from deepmhcii.data_utils import BA_TYPE, EL_TYPE, pseudo34_pos
+from deepmhc.deepmhcii.data_utils import BA_TYPE, EL_TYPE, pseudo34_pos
 
-from deepmhcii.data_utils import *
-from deepmhcii.datasets import MHCIIDataset, ELMHCDataset
-from deepmhcii.models import Model
-from deepmhcii.networks import *
-from deepmhcii.evaluation import get_metrics, output_res, CUTOFF
-
+from deepmhc.deepmhcii.data_utils import *
+from deepmhc.deepmhcii.datasets import MHCIIDataset, ELMHCDataset
+from deepmhc.deepmhcii.models import Model
+from deepmhc.deepmhcii.networks import *
+from deepmhc.deepmhcii.evaluation import get_metrics, output_res, CUTOFF
 
 
 def run_model(model, model_path, data_list, data_loader, output_path, bi_s_, 
               mode, start_id, num_models, reverse, sort, advanced, max_pool, verbose):
-    res_out_list = []
-    for model_id in trange(start_id, start_id + num_models):
-        model.set_model_path(model_path.with_name(f'{model_path.stem}-{model_id}'+model_path.suffix))
-        res_out_list.append(model.predict(data_loader, inverse=reverse))
-    res_out_list = list(zip(*res_out_list))
-    
-    el_scores = np.mean(res_out_list[1], axis=0)
-    # el_ranks = np.mean(res_out_list[2], axis=0)
-    el_att_list = np.stack(res_out_list[0], axis=0)
-    el_scores_list = np.stack(res_out_list[1], axis=0)
-    el_rank_list = np.stack(res_out_list[2], axis=0)
-    ba_att_list = np.stack(res_out_list[3], axis=0)
-    ba_scores_list = np.stack(res_out_list[4], axis=0)
-    ba_rank_list = np.stack(res_out_list[5], axis=0)
-    el_core_idx_list = res_out_list[6]
-    el_core_scores_list = res_out_list[7]
-    el_bind_mode = np.sum(res_out_list[8], axis=0) > (0.5 * num_models)
-     
+    res_out = model.predict(data_loader, valid=True, inverse=reverse)
+
+    el_att, el_scores, el_rank, ba_att, ba_scores, ba_rank, el_core_idx, el_core_scores, el_bind_mode = res_out
+    el_att_list = el_att[np.newaxis, ...]
+    el_scores_list = el_scores[np.newaxis, ...]
+    el_rank_list = el_rank[np.newaxis, ...]
+    ba_att_list = ba_att[np.newaxis, ...]
+    ba_scores_list = ba_scores[np.newaxis, ...]
+    ba_rank_list = ba_rank[np.newaxis, ...]
+    el_core_idx_list = [el_core_idx]
+    el_core_scores_list = [el_core_scores]
+    el_bind_mode = el_bind_mode > 0.5
+
     lengths = [len(data[-2]) for data in data_list]
     indices = np.cumsum([0] + lengths)
     
@@ -109,6 +103,13 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
         len_cols = len(cols)
         table_line = [5, 25, 30, 25, 12, 12, 12, 12, 12, 20, 20]
         formats = ["{:^5}", "{:^25}", "{:^30}", "{:^25}", "{:^12}", "{:^12}", "{:^12}", "{:^12}", "{:^12}", "{:^20}", "{:^20}"]
+        if mode == "Immu":
+            bc_idx = cols.index("Bind_Core")
+            cols.pop(bc_idx)
+            len_cols -= 1
+            table_line.pop(bc_idx)
+            formats.pop(bc_idx)
+            
         assert len(table_line) == len(formats)
         fmt_line = sum(table_line[:len_cols])
         fmt_str = ''.join(formats[:len_cols])   
@@ -126,6 +127,9 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
                     ([p4_[k]] if bi_s_!=None else []) + \
                     ([ ";".join(cell_allele_list[k]), ";".join([str(i) for i in np.round(cell_allele_score[k],3)])] if advanced else [])
             
+            if mode == "Immu":
+                piece.pop(bc_idx)
+            
             if output_path!=None and Path(output_path).suffix==".csv":
                 print(",".join([str(i) for i in piece]), file=fp)
             else:
@@ -141,10 +145,11 @@ def run_model(model, model_path, data_list, data_loader, output_path, bi_s_,
     return (s_, p_, bm_) if bi_s_==None else (s_, p_, bm_, p4_)
 
 
+
 @click.command()
 @click.option('-i', '--input-path', type=click.Path(exists=True), help='Input file path')
 @click.option('-o', '--output-path', type=click.Path(), help='Output file path', default=None)
-@click.option('-m', '--mode', type=click.Choice(('BA', 'EL', 'Epi', 'Immu')), default='EL', help="Choose a scoring output among binding affinity, ligand presentation and epitope identification")
+@click.option('-m', '--mode', type=click.Choice(('BA', 'EL', 'Epi')), default='EL', help="Choose a scoring output among binding affinity, ligand presentation and epitope identification")
 @click.option('-w', '--weight-name', type=str, default='PMC', help='Specified name of model weight')
 @click.option('-s', '--start-id', default=0, help="Start id of 25 models for ensemble")
 @click.option('-n', '--num-models', default=25, help="End id of 25 models for ensemble")
@@ -204,12 +209,14 @@ def main_process(input_path, output_path, mode, start_id, num_models, allele, co
             else:
                 print(f"Masked the inteaction pair of P{pep_idx}-{mask}")
                 model_cnf["model"]["conv_mask"][pep_idx+3-1][mhc_idx] = 0
-            model = Model(DeepMHCII_EL_Split_AttMIL, model_path=None, pooling=False, rank_pred=True, **model_cnf['model'])
+            model_paths = [model_path.with_name(f'{model_path.stem}-{model_id}'+model_path.suffix) for model_id in range(start_id, start_id + num_models)]
+            model = Model(Ensemble_Models, model_path=None, model_paths=model_paths, ensemble_num=num_models, pooling=False, rank_pred=True, **model_cnf['model'])
             s_, p_, bm_ = run_model_fn(model, model_path, data_list, data_loader, output_path, bi_s_=None, verbose=False)
             bi_s_.append(s_)
             model_cnf["model"]["conv_mask"][pep_idx+3-1][mhc_idx] = 1
 
-    model = Model(DeepMHCII_EL_Split_AttMIL, model_path=None, pooling=False, rank_pred=True, **model_cnf['model'])
+    model_paths = [model_path.with_name(f'{model_path.stem}-{model_id}'+model_path.suffix) for model_id in range(start_id, start_id + num_models)]
+    model = Model(Ensemble_Models, model_path=None, model_paths=model_paths, ensemble_num=num_models, pooling=False, rank_pred=True, **model_cnf['model'])
     s_, p_, bm_, *p4_ = run_model_fn(model, model_path, data_list, data_loader, output_path, bi_s_)
     
     if motif != None:
@@ -252,7 +259,16 @@ def main_process(input_path, output_path, mode, start_id, num_models, allele, co
             fig.delaxes(ax)
             
         plt.savefig(motif, dpi=300, bbox_inches='tight')
-
+        
+        # for data, name in zip(instance_list, name_list):
+        #     print(name)
+        #     name = name.split('(')[0]
+        #     txt_file = os.path.join(motif_dir, f"{name}_seq.txt")
+        #     fig_file = txt_file.replace("_seq.txt", "")
+        #     with open(txt_file, 'w') as f:
+        #         for seq in data:
+        #             f.write(f"{seq}\n")
+        #     os.system(f"GS_OPTIONS=-dDisableFAPI=true conda run -n py27 Seq2Logo -S 2 -f {txt_file} -o {fig_file}")
 
     if evaluation:
         mil_scores = s_
@@ -270,7 +286,6 @@ def main_process(input_path, output_path, mode, start_id, num_models, allele, co
         else:
             get_metrics(group_names, targets_list, mil_scores, pos_num)
     return
-
-
+                    
 if __name__ == '__main__':
     main_process()
