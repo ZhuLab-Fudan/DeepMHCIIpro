@@ -81,8 +81,8 @@ deepmhcpro -i ./data/indep/EPI2023.txt --mode Epi --reverse --verbose \
 ```
 ##### Immunogenicity test prediction with evaluation (SA; natural negatives)
 ```bash
-# Use fintuned model on immunological data
-deepmhcpro -i ./data/finetune/immun_test.txt --mode Immu --reverse --verbose \
+# Use binding-integrated model on immunological data
+deepmhcpro -i ./data/finetune/immun_test.txt --mode Epi --reverse --verbose \
 --evaluation --eval_file "evaluation.csv"
 # Use antigen presentation prediction
 deepmhcpro -i ./data/finetune/immun_test.txt --mode EL --reverse --verbose \
@@ -90,8 +90,8 @@ deepmhcpro -i ./data/finetune/immun_test.txt --mode EL --reverse --verbose \
 ```
 ##### Neoepitope immunogenicity prediction with evaluation (MA; artificial negatives)
 ```bash
-# Use fintuned model on immunological data
-deepmhcpro -i ./data/indep/NEO2019.15.txt --mode Immu --reverse --max-pool --verbose \
+# Use binding-integrated model on immunological data
+deepmhcpro -i ./data/indep/NEO2019.15.txt --mode Epi --reverse --max-pool --verbose \
 --evaluation --eval_file "evaluation.csv"
 # Use epitope recognization prediction
 deepmhcpro -i ./data/indep/NEO2019.15.txt --mode Epi --reverse --max-pool --verbose \
