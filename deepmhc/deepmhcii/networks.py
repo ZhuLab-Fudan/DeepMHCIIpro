@@ -10,7 +10,7 @@ from deepmhcii.data_utils import ACIDS
 from deepmhcii.modules import *
 from deepmhcii.init import truncated_normal_
 
-__all__ = ["DeepMHCII_EL_Split_AttMIL",]
+__all__ = ["DeepMHCII_EL_Split_AttMIL", "Ensemble_Models"]
 
 
 class Network(nn.Module):
@@ -175,3 +175,35 @@ class DeepMHCII_EL_Split_AttMIL(Network):
             nn.init.zeros_(linear.bias)
             linear_bn.reset_parameters()
             nn.init.normal_(linear_bn.weight.data, mean=1.0, std=0.002)
+
+
+class Ensemble_Models(nn.Module):
+    def __init__(self, model_paths=None, ensemble_num=25, base_model=DeepMHCII_EL_Split_AttMIL, **model_kwargs):
+        super(Ensemble_Models, self).__init__()
+        self.models = nn.ModuleList(base_model(**model_kwargs) for _ in range(ensemble_num))
+        if model_paths is not None:
+            self.load_models(model_paths)
+
+    def load_models(self, model_paths):
+        if len(model_paths) != len(self.models):
+            raise ValueError(f"Expected {len(self.models)} model paths, got {len(model_paths)}")
+        device = next(self.parameters()).device
+        for model, model_path in zip(self.models, model_paths):
+            model.load_state_dict(torch.load(model_path, map_location=device))
+
+    def forward(self, *args, **kwargs):
+        model_outs = torch.stack([model(*args, **kwargs) for model in self.models], dim=0)
+        ensemble_out = model_outs.mean(dim=0)
+
+        if model_outs.ndim >= 5 and model_outs.shape[-1] == 2 and model_outs.shape[-2] > 2:
+            core_flags = model_outs[..., :-2, 1] > 0.5
+            core_majority_flags = core_flags.sum(dim=0) > (0.5 * len(self.models))
+            core_masks = core_flags == core_majority_flags.unsqueeze(0)
+            core_mask_counts = core_masks.sum(dim=0).clamp_min(1).to(model_outs.dtype)
+            core_scores = model_outs[..., :-2, 0]
+
+            ensemble_out[..., :-2, 0] = (core_scores * core_masks.to(model_outs.dtype)).sum(dim=0) / core_mask_counts
+            ensemble_out[..., :-2, 1] = core_majority_flags.to(model_outs.dtype)
+            ensemble_out[..., -2, 1] = (model_outs[..., -2, 1].sum(dim=0) > (0.5 * len(self.models))).to(model_outs.dtype)
+
+        return ensemble_out

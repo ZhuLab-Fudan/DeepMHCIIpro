@@ -4,3 +4,6 @@ __pycache__/
 .vscode
 *.csv
 .gitignore
+results
+figures
+deepmhcpro1

@@ -72,7 +72,7 @@ deepmhcpro -i ./data/indep/MA2024.txt --mode EL --reverse --context \
 ```
 ##### Microbial antigen presentation prediction with evaluation
 ```bash
-deepmhcpro -i ./data/indep/MBL2023.txt --mode EL --reverse --verbose
+deepmhcpro -i ./data/indep/MBL2023.txt --mode EL --reverse --verbose -o micro_result.csv
 ```
 ##### CD4+ T cell epitope prediction with evaluation (SA; artificial negatives)
 ```bash
