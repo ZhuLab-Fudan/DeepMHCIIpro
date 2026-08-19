@@ -13,10 +13,10 @@ deepmhcpro --help
 ```
 
 ## Download data
-The following data are available at [Zenodo](https://doi.org/10.5281/zenodo.15844437). Moreover, all trained model weights are also provide in the above link.
+The following data are available at [Zenodo](https://doi.org/10.5281/zenodo.22004639). Moreover, all trained model weights are also provide in the above link.
 ```bash
-wget https://zenodo.org/records/15844437/files/use-data.zip
-unzip use-data.zip
+wget https://zenodo.org/records/22004639/files/use_data.zip
+unzip use_data.zip
 ls ./data
 ```
 
@@ -178,7 +178,7 @@ All trained model weights across multiple versions are publicly available, allow
 git clone https://github.com/lijxgit/DeepMHCIIpro.git && cd DeepMHCIIpro
 conda env create -f environment.yaml
 conda activate DeepMHCIIpro 
-wget -O model-weights.zip "https://zenodo.org/records/15280831/files/model-weights.zip?download=1"
+wget -O model-weights.zip "https://zenodo.org/records/22004639/files/model-weights.zip?download=1"
 unzip model-weights.zip && mv mhcii/ deepmhc/models/ 
 deepmhcpro --help 
 ```
