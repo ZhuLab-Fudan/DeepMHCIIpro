@@ -1,5 +1,6 @@
 deepmhc/models/*
-data
+# data
+build
 __pycache__/
 .vscode
 *.csv
