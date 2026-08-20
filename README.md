@@ -8,7 +8,7 @@ DeepMHCIIpro is a high-performance structure-aware deep interaction model reveal
 ##### Pip installation (release version with model weights)
 ```bash
 wget https://github.com/ZhuLab-Fudan/DeepMHCIIpro/releases/download/v1.0.2/deepmhcpro-1.0.2-py3-none-any.whl
-pip install deepmhcpro-1.0.1-py3-none-any.whl
+pip install deepmhcpro-1.0.2-py3-none-any.whl
 deepmhcpro --help 
 ```
 
@@ -33,7 +33,7 @@ Choose a scoring output from the following options:
   | `BA`        | Binding Affinity               |
   | `EL`        | Eluted Ligand presentation     |
   | `Epi`       | Epitope identification         |
-  | `Epi`      | Immunogenicity prediction      |
+  | `Epi`       | Immunogenicity prediction      |
 
 ### Optional arguments
 Specify allele name and allow multiple alleles, seperated by commas
