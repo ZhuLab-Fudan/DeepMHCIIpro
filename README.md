@@ -25,7 +25,7 @@ ls ./data
 ### Required arguments
 * `-i <file>` or  `--input <file>`: input file path
 * `-o <file>` or `--output <file>`: output file path
-* `-m <BA|EL|Epi|Immu>` or `--mode <BA|EL|Epi|Immu>`: scoring output mode
+* `-m <BA|EL|Epi>` or `--mode <BA|EL|Epi>`: scoring output mode
 Choose a scoring output from the following options:
 
   | Abbreviation | Scoring Output                |
@@ -33,7 +33,7 @@ Choose a scoring output from the following options:
   | `BA`        | Binding Affinity               |
   | `EL`        | Eluted Ligand presentation     |
   | `Epi`       | Epitope identification         |
-  | `Immu`      | Immunogenicity prediction      |
+  | `Epi`      | Immunogenicity prediction      |
 
 ### Optional arguments
 Specify allele name and allow multiple alleles, seperated by commas
@@ -195,7 +195,7 @@ Specified name of model weight, the options are as follow: \<PMC | PM | Pan | Mi
 
 ##### test command with evaluatuin results saved
 ```bash
-deepmhcpro -i ./data/indep/NEO2019.15.txt --mode Immu --reverse --max-pool --verbose -w PMC \
+deepmhcpro -i ./data/indep/NEO2019.15.txt --mode Epi --reverse --max-pool --verbose -w PMC \
 --evaluation --eval_file "evaluation.csv"
 ```
 
